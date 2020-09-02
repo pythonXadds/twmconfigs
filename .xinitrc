@@ -1,4 +1,4 @@
-# Sample .xinitrc ---------------------------------------------------------------
+# pymd .xinitrc ---------------------------------------------------------------
 #
 # Sets mouse cursor type unless you like the black X
 xsetroot -cursor_name left_ptr
