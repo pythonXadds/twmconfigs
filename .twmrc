@@ -15,23 +15,23 @@
 
 # These control various workspace colors.
 Color {
-	BorderColor		"black"
-#	BorderTileBackground	"bisque"
-#	BorderTileForeground	"bisque"
-	DefaultBackground	"rgb:2/a/9"
+	BorderColor		"darkgray"
+	BorderTileBackground	"blue"
+	BorderTileForeground	"bisque"
+	DefaultBackground	"gray85"
 	DefaultForeground	"gray85"
-	IconBackground		"rgb:2/a/9"
+	IconBackground		"blue"
 	IconForeground		"black"
-	IconBorderColor		"black"
-	IconManagerBackground	"rgb:2/a/9"
-	IconManagerForeground	"black"
-	IconManagerHighlight	"black"
-	MenuBackground		"rgb:2/a/9"
+	IconBorderColor		"blue"
+	IconManagerBackground	"blue"
+	IconManagerForeground	"white"
+	IconManagerHighlight	"blue"
+	MenuBackground		"white"
 	MenuForeground		"black"
-	MenuShadowColor		"black"
-	MenuTitleBackground	"black"
-	MenuTitleForeground	"white"
-	TitleBackground		"gray75"
+	MenuShadowColor		"gray85"
+	MenuTitleBackground	"gray85"
+	MenuTitleForeground	"black"
+	TitleBackground		"gray85"
 	TitleForeground		"black"
 }
 
@@ -58,19 +58,19 @@ MenuFont			"variable"
 TitleFont			"variable"
 
 # Pixel width of border around windows.
-BorderWidth			1
+BorderWidth			3
 
 # Sets space between title bar and application window.
 #FramePadding			2
 
 # Size of border around desktop icons.
-#IconBorderWidth		0
+IconBorderWidth		4
 
 # Desktop-style icons will be put in the following screen region. (we use IconManger instead)
 #IconRegion			"72x600-0+0" NORTH EAST 72 72
 
 # Initial location of Icon Manager, colums of icons.
-IconManagerGeometry		"70-0+25" 1
+IconManagerGeometry		"90-0+30" 1
 
 # This makes sure child windows have a border and title bar.
 ##DecorateTransients
@@ -205,13 +205,14 @@ Menu "DesktopMenuApps" {
 	"Clock"			f.exec "xclock -bg 'rgb:2/a/9' -fg black -digital -geometry '-0-0' -padding 0 &"
 	""			f.nop
 	"Xterm"			f.exec "xterm -ls -bg black -fg gray85 &"
-	"vim"			f.exec "xterm -ls -bg white -fg black -e nvim &"
+	"lxterminal"			f.exec "xterm -ls -bg white -fg black -e lxterminal &"
 	"Nitrogen"              f.exec "xterm -ls -bg white -fg black -e nitrogen &"
-        "code"                  f.exec "xterm -ls -bg white -fg black -e code &"
-        "Emacs"                 f.exec "xterm -ls -bg white -fg black -e  emacs &"
+        "gvim"                  f.exec "xterm -ls -bg white -fg black -e gvim &"
+        "geany"                 f.exec "xterm -ls -bg white -fg black -e  geany &"
         "firefox"               f.exec "xterm -ls -bg white -fg black -e firefox &"
         "thunar"                f.exec "xterm -ls -bg white -fg black -e thunar &"
-        "ranger"                f.exec "xterm -ls -bg white -fg black -e ranger &"
+        "beaver"                f.exec "xterm -ls -bg white -fg black -e beaver &"
+        "Command" f.exec "xterm -geometry 25x1+840+1150 -title Run -e ~/.twm/scripts/getrun &"
         ""			f.nop
 	"Restart"		f.restart
 	"Exit"			f.quit
@@ -229,8 +230,53 @@ Menu "DesktopMenuTools" {
 	"Close"			f.delete
 }
 
+# Virtual Desktops
 
-# Since twm cannot autostart applications I created this script. 
+function "desktop-1" {
+	f.exec "xmessage -center -timeout 1 -buttons OK DESKTOP NO: 1 &"
+	f.exec "vdesk 1"
+	}
+	function "desktop-2" {
+	f.exec "xmessage -center -timeout 1 -buttons OK DESKTOP NO: 2 &"
+	f.exec "vdesk 2" 
+	}
+	function "desktop-3" {
+	f.exec "xmessage -center -timeout 1 -buttons OK DESKTOP NO: 3 &"
+	f.exec "vdesk 3" 
+	}
+	function "desktop-4" {
+	f.exec "xmessage -center -timeout 1 -buttons OK DESKTOP NO: 4 &"
+	f.exec "vdesk 4"
+	}
+
+	"1" = c : all : f.function "desktop-1"
+	"2" = c : all : f.function "desktop-2"
+	"3" = c : all : f.function "desktop-3"
+	"4" = c : all : f.function "desktop-4"
+
+function "next" {
+	f.exec "A=$((`vdesk`+1)); if [ $A = 5 ] ; then A=1 ; fi ; vdesk $A"
+	f.exec "B=$((`vdesk`)); xmessage -center -timeout 1 -buttons OK DESKTOP NO: $B &"
+	}
+
+	function "prev" {
+	f.exec "A=$((`vdesk`-1)); if [ $A = 0 ] ; then A=4 ; fi ; vdesk $A"
+	f.exec "B=$((`vdesk`)); xmessage -center -timeout 1 -buttons OK DESKTOP NO: $B &"
+	}
+	"Right" = c : all : f.function "next"
+	"Left"  = c : all : f.function "prev"
+	
+	
+
+
+# Sinmenu "WindowMenu" {
+	"Sendto 1"   f.exec "/home/orby/.twm/scripts/sendto-1 &"
+	"Sendto 2"   f.exec "/home/orby/.twm/scripts/sendto-2 &"
+	"Sendto 3"   f.exec "/home/orby/.twm/scripts/sendto-3 &"
+	"Sendto 4"   f.exec "/home/orby/.twm/scripts/sendto-4 &"
+	}
+	
+#	since twm cannot autostart applications I created this script. 
 # It will set desktop foreground to default twm menu background color and
 # will start xcloc on bottom down corner of the screen.
 # --- cut here ---
@@ -242,3 +288,4 @@ Menu "DesktopMenuTools" {
 # exec xterm
 # --- cut here ---
 
+xsetroot -bitmap bricks.xbm -fg "#808080" -bg "#101010"
