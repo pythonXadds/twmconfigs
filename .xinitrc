@@ -20,3 +20,4 @@ vdesk &
 # Finally launch TWM (The Window Manager!)
 exec twm
 # -------------------------------------------------------------------------------
+fbsetroot -gradient Elliptic -from '#2d527f' -to '#859ac0' &
