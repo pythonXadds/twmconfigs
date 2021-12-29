@@ -1,0 +1,2 @@
+winid=$(xdotool click 1 | xwininfo | grep -oP '(?<=id:).*?(?=")');
+	vdesk 1 $winid

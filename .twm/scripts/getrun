@@ -1,1 +1,4 @@
-
+read -p "# " userinput
+	nohup $userinput >/dev/null 2>&1 &
+	PPPID=$(awk '{print $4}' "/proc/$PPID/stat")
+	kill $PPPID
